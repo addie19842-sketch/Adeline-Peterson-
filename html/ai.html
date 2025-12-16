@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="sideNav">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">
+                <span class="d-block d-lg-none">Adeline Peterson</span>
+                <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assests/img /headshot2.jpg" alt="..." /></span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="../index.html">Resume</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="hobbies.html">Running</a></li>
+                </ul>
+            </div>
+        </nav> 
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Find Your Perfect Pace</title>
+  <style>
+    body {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #ecfeff, #e0f2fe);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .app {
+      background: white;
+      padding: 2rem;
+      width: 360px;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 0.25rem;
+    }
+
+    p {
+      color: #374151;
+      font-size: 0.95rem;
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.75rem;
+      font-size: 1rem;
+    }
+
+    input {
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+    }
+
+    button {
+      background-color: #0ea5e9;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0284c7;
+    }
+
+    .feedback {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    .history {
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      color: #4b5563;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <h1>🏃‍♀️ Find Your Pace</h1>
+    <p>Guess the ideal race pace (minutes per mile).</p>
+
+    <select id="race" onchange="startTraining()">
+      <option value="5k">5K Race</option>
+      <option value="10k">10K Race</option>
+      <option value="half">Half Marathon</option>
+    </select>
+
+    <input type="number" step="0.01" id="guess" placeholder="Example: 7.50">
+
+    <button onclick="checkPace()">Submit Pace</button>
+    <button onclick="startTraining()">Reset Training</button>
+
+    <div class="feedback" id="feedback"></div>
+    <div class="history" id="history"></div>
+  </div>
+
+  <script>
+    let targetPace;
+    let attempts;
+    let guesses;
+function formatPace(pace) {
+  const minutes = Math.floor(pace);
+  const seconds = Math.round((pace - minutes) * 60);
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
+
+    function startTraining() {
+      const race = document.getElementById("race").value;
+
+      if (race === "5k") {
+        targetPace = randomPace(6.5, 9);
+      } else if (race === "10k") {
+        targetPace = randomPace(7, 10);
+      } else {
+        targetPace = randomPace(7.5, 11);
+      }
+
+      attempts = 0;
+      guesses = [];
+      document.getElementById("feedback").textContent = "";
+      document.getElementById("history").textContent = "";
+      document.getElementById("guess").value = "";
+    }
+
+    function randomPace(min, max) {
+      return (Math.random() * (max - min) + min).toFixed(2);
+    }
+
+    function checkPace() {
+      const userGuess = parseFloat(document.getElementById("guess").value);
+      if (isNaN(userGuess)) return;
+
+      attempts++;
+      guesses.push(userGuess.toFixed(2));
+
+      if (userGuess > targetPace) {
+  document.getElementById("feedback").textContent =
+    `Too slow 🐢 Try picking it up!`;
+} else if (userGuess < targetPace) {
+  document.getElementById("feedback").textContent =
+    `Too fast 🏎️ Ease off a bit!`;
+} else {
+  const tips = [
+    "Great tempo pace!",
+    "Perfect for race day — lock it in!",
+    "Comfortably hard effort. Nice work!",
+    "Strong aerobic pace — well trained!"
+  ];
+
+  const tip = tips[Math.floor(Math.random() * tips.length)];
+
+  document.getElementById("feedback").textContent =
+    `Perfect pace! 🎉 ${formatPace(targetPace)} / mile. 
+     You found it in ${attempts} attempts. ${tip}`;
+}
+
+      document.getElementById("history").textContent =
+        "Your guesses: " + guesses.join(", ");
+    }
+
+    startTraining();
+  </script>
+</body>
+</html>
